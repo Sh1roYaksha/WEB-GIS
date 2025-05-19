@@ -1,0 +1,20 @@
+fetch('buildings.geojson')
+  .then(response => response.json())
+  .then(data => {
+    var buildingLayer = L.geoJSON(data, {
+      style: {
+        color: "#1f78b4",
+        weight: 2
+      },
+      onEachFeature: function (feature, layer) {
+        let name = feature.properties.name || "Unnamed";
+        layer.bindPopup("<b>Building:</b> " + name);
+      }
+    }).addTo(map);
+
+    // Optional: Add to layer control
+    var overlayMaps = {
+      "Buildings": buildingLayer
+    };
+    L.control.layers(null, overlayMaps).addTo(map);
+  });
